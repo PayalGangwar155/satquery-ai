@@ -1,0 +1,22 @@
+{
+  "index_name": "NDBI",
+  "artifact_path": "C:\\Users\\Payal Gangwar\\OneDrive\\Desktop\\sih\\artifacts\\index_NDBI_aecbd6cfdda0.tif",
+  "statistics": {
+    "min": -0.42,
+    "max": 0.58,
+    "mean": 0.125,
+    "std": 0.14,
+    "median": 0.125
+  },
+  "provenance": {
+    "source_name": "SatQuery Raster Index Processor (numpy/rasterio)",
+    "source_url": "internal://compute_index",
+    "retrieved_at": "2026-08-24T16:00:20Z",
+    "request_params": {
+      "index_name": "NDBI",
+      "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522"
+    },
+    "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522",
+    "acquisition_date": null
+  }
+}

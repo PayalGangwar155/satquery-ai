@@ -1,0 +1,55 @@
+{
+  "resolved_name": "New Delhi",
+  "geojson": {
+    "type": "Feature",
+    "properties": {
+      "name": "New Delhi"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.1,
+            28.5
+          ],
+          [
+            77.3,
+            28.5
+          ],
+          [
+            77.3,
+            28.7
+          ],
+          [
+            77.1,
+            28.7
+          ],
+          [
+            77.1,
+            28.5
+          ]
+        ]
+      ]
+    }
+  },
+  "bbox": [
+    77.1,
+    28.5,
+    77.3,
+    28.7
+  ],
+  "centroid": [
+    77.2,
+    28.6
+  ],
+  "geojson_artifact_path": "artifacts/aoi_test.geojson",
+  "provenance": {
+    "source_name": "OSM Nominatim",
+    "source_url": "https://nominatim.openstreetmap.org/search?q=New+Delhi",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "place_name": "New Delhi"
+    }
+  }
+}

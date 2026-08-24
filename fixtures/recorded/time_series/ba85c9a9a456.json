@@ -1,0 +1,65 @@
+{
+  "index_name": "NDVI",
+  "points": [
+    {
+      "date": "2025-01-15",
+      "mean": 0.32,
+      "std": 0.12,
+      "valid_pixel_ratio": 0.98
+    },
+    {
+      "date": "2025-02-15",
+      "mean": 0.36,
+      "std": 0.13,
+      "valid_pixel_ratio": 0.95
+    },
+    {
+      "date": "2025-03-15",
+      "mean": 0.452,
+      "std": 0.185,
+      "valid_pixel_ratio": 0.99
+    },
+    {
+      "date": "2025-04-15",
+      "mean": 0.51,
+      "std": 0.19,
+      "valid_pixel_ratio": 0.97
+    },
+    {
+      "date": "2025-05-15",
+      "mean": 0.48,
+      "std": 0.175,
+      "valid_pixel_ratio": 0.94
+    },
+    {
+      "date": "2025-06-15",
+      "mean": 0.41,
+      "std": 0.16,
+      "valid_pixel_ratio": 0.91
+    },
+    {
+      "date": "2025-07-15",
+      "mean": 0.55,
+      "std": 0.2,
+      "valid_pixel_ratio": 0.88
+    },
+    {
+      "date": "2025-08-15",
+      "mean": 0.58,
+      "std": 0.21,
+      "valid_pixel_ratio": 0.96
+    }
+  ],
+  "provenance": {
+    "source_name": "Sentinel Hub Statistical API",
+    "source_url": "https://sh.dataspace.copernicus.eu/api/v1/statistics",
+    "retrieved_at": "2026-08-24T12:50:10Z",
+    "request_params": {
+      "index_name": "NDVI",
+      "date_start": "2025-01-01",
+      "date_end": "2025-08-31"
+    },
+    "scene_id": null,
+    "acquisition_date": null
+  }
+}

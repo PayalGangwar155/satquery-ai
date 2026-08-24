@@ -1,0 +1,21 @@
+{
+  "baseline_scene_id": "S2B_BASE",
+  "target_scene_id": "S2A_TARGET",
+  "index_name": "NDVI",
+  "delta_artifact_path": "artifacts/diff_sample.tif",
+  "net_area_changed_m2": 1450000.0,
+  "change_percentage": 11.6,
+  "mean_change_magnitude": 0.235,
+  "provenance": {
+    "source_name": "SatQuery Raster Change Engine",
+    "source_url": "internal://change_detect",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "baseline_scene_id": "S2B_BASE",
+      "target_scene_id": "S2A_TARGET",
+      "index_name": "NDVI",
+      "threshold": 0.15
+    },
+    "scene_id": "S2A_TARGET"
+  }
+}

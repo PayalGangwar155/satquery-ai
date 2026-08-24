@@ -1,0 +1,21 @@
+{
+  "index_name": "NDVI",
+  "artifact_path": "artifacts/index_NDVI_sample.tif",
+  "statistics": {
+    "min": -0.12,
+    "max": 0.84,
+    "mean": 0.452,
+    "std": 0.185,
+    "median": 0.452
+  },
+  "provenance": {
+    "source_name": "SatQuery Raster Index Processor (numpy/rasterio)",
+    "source_url": "internal://compute_index",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522",
+      "index_name": "NDVI"
+    },
+    "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522"
+  }
+}

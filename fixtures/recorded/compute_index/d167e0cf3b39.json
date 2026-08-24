@@ -1,0 +1,22 @@
+{
+  "index_name": "NDVI",
+  "artifact_path": "C:\\Users\\Payal Gangwar\\OneDrive\\Desktop\\sih\\artifacts\\index_NDVI_d167e0cf3b39.tif",
+  "statistics": {
+    "min": -0.12,
+    "max": 0.84,
+    "mean": 0.452,
+    "std": 0.185,
+    "median": 0.452
+  },
+  "provenance": {
+    "source_name": "SatQuery Raster Index Processor (numpy/rasterio)",
+    "source_url": "internal://compute_index",
+    "retrieved_at": "2026-08-24T12:50:11Z",
+    "request_params": {
+      "scene_id": "S2B_TEST_SCENE",
+      "index_name": "NDVI"
+    },
+    "scene_id": "S2B_TEST_SCENE",
+    "acquisition_date": null
+  }
+}

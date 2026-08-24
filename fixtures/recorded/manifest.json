@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "recorded_at_format": "ISO-8601",
+  "fixtures": [
+    {
+      "op": "resolve_aoi",
+      "hash": "6e34d8c5d497",
+      "source_url": "https://nominatim.openstreetmap.org/search",
+      "request_sha256": "6e34d8c5d4976f5b69200e80ff7e1cf3a3ebf9d8172e18d22426b71ae1d8d888",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\resolve_aoi\\6e34d8c5d497.json"
+    },
+    {
+      "op": "search_scenes",
+      "hash": "ff3925544e04",
+      "source_url": "https://catalogue.dataspace.copernicus.eu/stac/search",
+      "request_sha256": "ff3925544e040f67ad9c6e46084f32cd674f86f73d32c2bf546c584bd2690ccb",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\search_scenes\\ff3925544e04.json"
+    },
+    {
+      "op": "pick_scenes",
+      "hash": "e99c8ee425a2",
+      "source_url": "internal://pick_scenes",
+      "request_sha256": "e99c8ee425a2686242e886df090d364dd0d50d5fc1cdccfd12ab22d392bb19be",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\pick_scenes\\e99c8ee425a2.json"
+    },
+    {
+      "op": "render_bands",
+      "hash": "9857567583c2",
+      "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+      "request_sha256": "9857567583c2a3d8cd6d33c09ad5e24d3a427336530ca227542b8e258cb4abca",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\render_bands\\9857567583c2.json"
+    },
+    {
+      "op": "compute_index",
+      "hash": "8c548cc3e693",
+      "source_url": "internal://compute_index",
+      "request_sha256": "8c548cc3e693f57641ced3942a5fe147d73dff3208a83f9ea18a6546dba3197e",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\compute_index\\8c548cc3e693.json"
+    },
+    {
+      "op": "zonal_stats",
+      "hash": "50035b2193b1",
+      "source_url": "internal://zonal_stats",
+      "request_sha256": "50035b2193b1d4d7868ad75d44271bdd196ff013e728406cad1f69d8ee298c53",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\zonal_stats\\50035b2193b1.json"
+    },
+    {
+      "op": "time_series",
+      "hash": "cc68f22a2c34",
+      "source_url": "https://sh.dataspace.copernicus.eu/api/v1/statistics",
+      "request_sha256": "cc68f22a2c34258e3109ced61640cd92eb2c127a6a0adcbfdd7de955fb7314c6",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\time_series\\cc68f22a2c34.json"
+    },
+    {
+      "op": "change_detect",
+      "hash": "4e761dbd4be9",
+      "source_url": "internal://change_detect",
+      "request_sha256": "4e761dbd4be9d5ebe2dd4d89d06dda7e11e998d23bf548f29e40c4d6a2a18df6",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\change_detect\\4e761dbd4be9.json"
+    },
+    {
+      "op": "semantic_search",
+      "hash": "b3813737bb93",
+      "source_url": "internal://semantic_search",
+      "request_sha256": "b3813737bb93d6dfcd01662eaefd6486d87c64ae42582cef76f4534051d09bb4",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\semantic_search\\b3813737bb93.json"
+    },
+    {
+      "op": "vlm_describe",
+      "hash": "20ebced931d3",
+      "source_url": "internal://vlm_describe",
+      "request_sha256": "20ebced931d308bffff98e2f781c16f43b89dd3f73414488f346b9104573f5f9",
+      "fetch_timestamp": "2026-08-24T00:30:00Z",
+      "http_status": 200,
+      "file_path": "fixtures\\recorded\\vlm_describe\\20ebced931d3.json"
+    }
+  ]
+}

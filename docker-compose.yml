@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: satquery_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-satquery}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-satquery_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-satquery_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U satquery -d satquery_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: satquery_api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://satquery:satquery_pass@db:5432/satquery_db
+      - OFFLINE_REPLAY=${OFFLINE_REPLAY:-false}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - CDSE_CLIENT_ID=${CDSE_CLIENT_ID:-}
+      - CDSE_CLIENT_SECRET=${CDSE_CLIENT_SECRET:-}
+    volumes:
+      - ./api:/app
+      - ./artifacts:/app/artifacts
+      - ./fixtures:/app/fixtures
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: satquery_web
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - api
+
+volumes:
+  pgdata:

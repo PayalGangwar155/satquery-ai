@@ -1,0 +1,13 @@
+{
+  "image_artifact_path": "artifacts/render_sample.png",
+  "visual_description": "Grounded visual verification for New Delhi: The rendered Sentinel-2 composite displays high spectral reflection in the near-infrared band corresponding to healthy agricultural vegetation in the northern quadrant, with distinct urban built-up impervious surfaces in the central sector.",
+  "provenance": {
+    "source_name": "Grounded Visual Verification Module",
+    "source_url": "internal://vlm_describe",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "image_artifact_path": "artifacts/render_sample.png",
+      "aoi_name": "New Delhi"
+    }
+  }
+}

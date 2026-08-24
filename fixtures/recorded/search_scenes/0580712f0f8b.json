@@ -1,0 +1,61 @@
+{
+  "total_found": 1,
+  "scenes": [
+    {
+      "scene_id": "S2B_MSIL2A_20250715T053639_N0511_R005_T43REQ_20250715T081522",
+      "acquisition_date": "2025-07-15T05:36:39Z",
+      "cloud_cover": 5.5,
+      "bbox": [
+        72.75,
+        18.9,
+        72.98,
+        19.25
+      ],
+      "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/collections/SENTINEL-2/items/S2B_MSIL2A_20250715",
+      "collection": "SENTINEL-2"
+    }
+  ],
+  "provenance": {
+    "source_name": "Copernicus Data Space Ecosystem STAC",
+    "source_url": "https://catalogue.dataspace.copernicus.eu/stac/search",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "geojson_aoi": {
+        "type": "Feature",
+        "properties": {
+          "name": "Mumbai"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                72.75,
+                18.9
+              ],
+              [
+                72.98,
+                18.9
+              ],
+              [
+                72.98,
+                19.25
+              ],
+              [
+                72.75,
+                19.25
+              ],
+              [
+                72.75,
+                18.9
+              ]
+            ]
+          ]
+        }
+      },
+      "datetime_range": "2025-01-01/2025-08-31",
+      "collection": "SENTINEL-2",
+      "max_cloud_cover": 20.0
+    }
+  }
+}

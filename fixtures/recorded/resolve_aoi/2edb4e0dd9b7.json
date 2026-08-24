@@ -1,0 +1,55 @@
+{
+  "resolved_name": "Mumbai",
+  "geojson": {
+    "type": "Feature",
+    "properties": {
+      "name": "Mumbai"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            72.75,
+            18.9
+          ],
+          [
+            72.98,
+            18.9
+          ],
+          [
+            72.98,
+            19.25
+          ],
+          [
+            72.75,
+            19.25
+          ],
+          [
+            72.75,
+            18.9
+          ]
+        ]
+      ]
+    }
+  },
+  "bbox": [
+    72.75,
+    18.9,
+    72.98,
+    19.25
+  ],
+  "centroid": [
+    72.865,
+    19.075
+  ],
+  "geojson_artifact_path": "artifacts/aoi_mumbai.geojson",
+  "provenance": {
+    "source_name": "OSM Nominatim",
+    "source_url": "https://nominatim.openstreetmap.org/search?q=Mumbai",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "place_name": "Mumbai"
+    }
+  }
+}

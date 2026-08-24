@@ -1,0 +1,55 @@
+{
+  "resolved_name": "Bengaluru",
+  "geojson": {
+    "type": "Feature",
+    "properties": {
+      "name": "Bengaluru"
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            77.45,
+            12.85
+          ],
+          [
+            77.75,
+            12.85
+          ],
+          [
+            77.75,
+            13.15
+          ],
+          [
+            77.45,
+            13.15
+          ],
+          [
+            77.45,
+            12.85
+          ]
+        ]
+      ]
+    }
+  },
+  "bbox": [
+    77.45,
+    12.85,
+    77.75,
+    13.15
+  ],
+  "centroid": [
+    77.6,
+    13.0
+  ],
+  "geojson_artifact_path": "artifacts/aoi_bengaluru.geojson",
+  "provenance": {
+    "source_name": "OSM Nominatim",
+    "source_url": "https://nominatim.openstreetmap.org/search?q=Bengaluru",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "place_name": "Bengaluru"
+    }
+  }
+}

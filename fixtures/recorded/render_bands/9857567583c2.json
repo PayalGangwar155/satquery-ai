@@ -1,0 +1,26 @@
+{
+  "artifact_path": "artifacts/render_sample.png",
+  "image_width": 256,
+  "image_height": 256,
+  "format": "png",
+  "bands_rendered": [
+    "B04",
+    "B03",
+    "B02"
+  ],
+  "provenance": {
+    "source_name": "Sentinel Hub Process API / Raster Engine",
+    "source_url": "https://sh.dataspace.copernicus.eu/api/v1/process",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522",
+      "bands": [
+        "B04",
+        "B03",
+        "B02"
+      ],
+      "format": "png"
+    },
+    "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "total_found": 1,
+  "scenes": [
+    {
+      "scene_id": "S2B_MSIL2A_20250515T053639_N0511_R005_T43REQ_20250515T081522",
+      "acquisition_date": "2025-05-15T05:36:39Z",
+      "cloud_cover": 8.0,
+      "bbox": [
+        77.45,
+        12.85,
+        77.75,
+        13.15
+      ],
+      "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/collections/SENTINEL-2/items/S2B_MSIL2A_20250515",
+      "collection": "SENTINEL-2"
+    }
+  ],
+  "provenance": {
+    "source_name": "Copernicus Data Space Ecosystem STAC",
+    "source_url": "https://catalogue.dataspace.copernicus.eu/stac/search",
+    "retrieved_at": "2026-08-24T00:30:00Z",
+    "request_params": {
+      "geojson_aoi": {
+        "type": "Feature",
+        "properties": {
+          "name": "Bengaluru"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                77.45,
+                12.85
+              ],
+              [
+                77.75,
+                12.85
+              ],
+              [
+                77.75,
+                13.15
+              ],
+              [
+                77.45,
+                13.15
+              ],
+              [
+                77.45,
+                12.85
+              ]
+            ]
+          ]
+        }
+      },
+      "datetime_range": "2025-01-01/2025-08-31",
+      "collection": "SENTINEL-2",
+      "max_cloud_cover": 20.0
+    }
+  }
+}

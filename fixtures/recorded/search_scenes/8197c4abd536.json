@@ -1,0 +1,75 @@
+{
+  "total_found": 2,
+  "scenes": [
+    {
+      "scene_id": "S2B_MSIL2A_20250315T053639_N0511_R005_T43REQ_20250315T081522",
+      "acquisition_date": "2025-03-15T05:36:39Z",
+      "cloud_cover": 4.2,
+      "bbox": [
+        77.1,
+        28.5,
+        77.3,
+        28.7
+      ],
+      "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/items/S2B_MSIL2A_20250315",
+      "collection": "SENTINEL-2"
+    },
+    {
+      "scene_id": "S2A_MSIL2A_20250420T053641_N0511_R005_T43REQ_20250420T082010",
+      "acquisition_date": "2025-04-20T05:36:41Z",
+      "cloud_cover": 12.1,
+      "bbox": [
+        77.1,
+        28.5,
+        77.3,
+        28.7
+      ],
+      "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/items/S2A_MSIL2A_20250420",
+      "collection": "SENTINEL-2"
+    }
+  ],
+  "provenance": {
+    "source_name": "Copernicus Data Space Ecosystem STAC",
+    "source_url": "https://catalogue.dataspace.copernicus.eu/stac",
+    "retrieved_at": "2026-08-23T18:12:17Z",
+    "request_params": {
+      "geojson_aoi": {
+        "type": "Feature",
+        "properties": {
+          "name": "New Delhi"
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                77.1,
+                28.5
+              ],
+              [
+                77.3,
+                28.5
+              ],
+              [
+                77.3,
+                28.7
+              ],
+              [
+                77.1,
+                28.7
+              ],
+              [
+                77.1,
+                28.5
+              ]
+            ]
+          ]
+        }
+      },
+      "datetime_range": "2025-01-01/2025-08-31",
+      "collection": "SENTINEL-2"
+    },
+    "scene_id": null,
+    "acquisition_date": null
+  }
+}
