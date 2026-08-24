@@ -5,7 +5,8 @@ import {
   Compass,
   Layers,
   FileDown,
-  Download
+  Download,
+  CheckCircle2
 } from 'lucide-react';
 import Header from './components/Header';
 import Sidebar, { ActiveTab } from './components/Sidebar';
@@ -166,14 +167,14 @@ export default function App() {
     const newArea: SavedArea = {
       id: `custom-${Date.now()}`,
       name: aoi.resolved_name,
-      state: 'Custom Saved AOI',
-      description: `User-saved region for ${indexName} observation`,
+      state: 'Custom Saved Region',
+      description: `User-saved area for ${indexName} observation`,
       bbox: aoi.bbox,
       centroid: aoi.centroid,
       defaultIndex: indexName as any,
       defaultQuery: query,
-      badge: 'User Saved',
-      type: 'Custom AOI'
+      badge: 'Custom AOI',
+      type: 'User AOI'
     };
 
     setSavedAreas((prev) => [newArea, ...prev]);
@@ -217,7 +218,7 @@ export default function App() {
   const selectedScene = response?.evidence?.step_3?.selected_scene;
 
   const satelliteMeta = {
-    collection: selectedScene?.collection || 'SENTINEL-2 L2A',
+    collection: selectedScene?.collection || 'Sentinel-2 L2A',
     resolution: '10m',
     sceneId: selectedScene?.scene_id,
     acqDate: selectedScene?.acquisition_date
@@ -243,6 +244,8 @@ export default function App() {
           setCollapsed={setSidebarCollapsed}
           historyCount={history.length}
           savedCount={savedAreas.length}
+          health={health}
+          onOpenHelp={() => setIsHelpOpen(true)}
         />
 
         {/* Content Area */}
@@ -274,10 +277,10 @@ export default function App() {
               <SettingsModal isOpen={true} onClose={() => setActiveTab('analysis')} health={health} />
             </div>
           ) : (
-            /* MAIN ANALYSIS / EXPLORE WORKSPACE (Default) */
+            /* MAIN ANALYSIS / EXPLORE WORKSPACE */
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 flex-1 min-h-0">
               {/* Center/Left Main Panel (Cols 1-8 on desktop) */}
-              <div className="lg:col-span-8 border-r border-[#1e293b] flex flex-col p-5 gap-5 overflow-y-auto bg-[#070b14]">
+              <div className="lg:col-span-8 border-r border-slate-800 flex flex-col p-4 sm:p-5 gap-4 sm:gap-5 overflow-y-auto bg-[#070b14]">
                 {/* Hero Command Query Bar */}
                 <QueryBar
                   query={query}
@@ -304,30 +307,32 @@ export default function App() {
 
                 {/* Error State Card */}
                 {error && (
-                  <div className="p-6 bg-red-950/40 border border-red-800/80 rounded-2xl space-y-3 font-mono shadow-2xl">
-                    <div className="flex items-center justify-between text-red-400 font-bold text-xs uppercase">
+                  <div className="p-5 bg-red-950/40 border border-red-800/80 rounded-2xl space-y-3 shadow-xl font-sans">
+                    <div className="flex items-center justify-between text-red-400 font-semibold text-xs uppercase">
                       <span className="flex items-center gap-2">
-                        <AlertCircle className="w-5 h-5" /> ANALYSIS COULD NOT BE COMPLETED
+                        <AlertCircle className="w-5 h-5" /> Analysis Could Not Be Completed
                       </span>
-                      <span className="bg-red-900/60 px-2 py-0.5 rounded text-red-300">HTTP 500 / TIMEOUT</span>
+                      <span className="bg-red-900/60 px-2.5 py-0.5 rounded text-red-300 font-mono text-[10px]">
+                        Service Error
+                      </span>
                     </div>
-                    <p className="text-sm text-slate-200 font-sans leading-relaxed">
+                    <p className="text-sm text-slate-200 leading-relaxed">
                       {error}
                     </p>
-                    <div className="pt-2 flex items-center gap-3">
+                    <div className="pt-1 flex items-center gap-3">
                       <button
                         onClick={() => handleExecute()}
-                        className="px-4 py-2 bg-red-900 hover:bg-red-800 text-red-100 font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center gap-2 cursor-pointer shadow-md"
+                        className="px-4 py-2 bg-red-900 hover:bg-red-800 text-red-100 font-semibold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center gap-2 cursor-pointer shadow-md"
                       >
                         <RotateCcw className="w-4 h-4" />
-                        <span>RETRY ANALYSIS</span>
+                        <span>Retry Analysis</span>
                       </button>
                       <button
                         onClick={() => {
                           setQuery('Analyze NDVI vegetation in Delhi');
                           handleExecute('Analyze NDVI vegetation in Delhi');
                         }}
-                        className="px-4 py-2 bg-[#070b14] hover:bg-[#131b2e] border border-[#1e293b] text-slate-300 font-bold text-xs uppercase rounded-xl transition-colors font-mono"
+                        className="px-4 py-2 bg-[#070b14] hover:bg-slate-800 border border-slate-800 text-slate-300 font-medium text-xs rounded-xl transition-colors"
                       >
                         Try Preset (Delhi NDVI)
                       </button>
@@ -337,17 +342,28 @@ export default function App() {
 
                 {/* Empty State Banner before first analysis */}
                 {!response && !loading && !error && (
-                  <div className="p-8 border border-[#1e293b] rounded-2xl bg-[#0f172a] text-center space-y-4 shadow-xl">
-                    <div className="p-3 bg-[#0e2a38] text-cyan-400 border border-cyan-500/40 rounded-2xl w-fit mx-auto shadow-lg shadow-cyan-950/50">
+                  <div className="p-8 border border-slate-800 rounded-2xl bg-[#0f172a] text-center space-y-3 shadow-xl">
+                    <div className="p-3 bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 rounded-2xl w-fit mx-auto shadow-md">
                       <Compass className="w-8 h-8 animate-pulse text-cyan-400" />
                     </div>
-                    <div>
-                      <h3 className="text-base font-bold font-mono text-slate-100 uppercase tracking-wide">
-                        Explore Earth with Natural Language
+                    <div className="space-y-1">
+                      <h3 className="text-base font-bold text-white font-sans">
+                        Ready to Explore Earth Observations
                       </h3>
-                      <p className="text-xs text-slate-400 font-sans pt-1 max-w-lg mx-auto">
-                        Ask SatQuery about vegetation health, flood extent, urban development, or crop vigor across Indian and global geographic regions.
+                      <p className="text-xs text-slate-400 max-w-md mx-auto">
+                        Ask about vegetation health, flood extent, urban development, or crop vigor across Indian and global geographic regions using the query bar above.
                       </p>
+                    </div>
+                    <div className="pt-2 flex flex-wrap justify-center gap-2 text-xs text-slate-400">
+                      <span className="flex items-center gap-1 bg-[#070b14] px-2.5 py-1 rounded-md border border-slate-800">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Real Copernicus STAC
+                      </span>
+                      <span className="flex items-center gap-1 bg-[#070b14] px-2.5 py-1 rounded-md border border-slate-800">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Zero Hallucinations
+                      </span>
+                      <span className="flex items-center gap-1 bg-[#070b14] px-2.5 py-1 rounded-md border border-slate-800">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> 100% Provenance Audit
+                      </span>
                     </div>
                   </div>
                 )}
@@ -376,16 +392,16 @@ export default function App() {
 
                 {/* Export Actions Bar */}
                 {response && (
-                  <div className="p-4 bg-[#0f172a] border border-[#1e293b] rounded-2xl flex flex-wrap items-center justify-between gap-3 font-mono text-xs shadow-xl">
-                    <div className="flex items-center gap-2 text-slate-400">
+                  <div className="p-4 bg-[#0f172a] border border-slate-800 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs shadow-xl">
+                    <div className="flex items-center gap-2 text-slate-300 font-medium">
                       <Layers className="w-4 h-4 text-cyan-400" />
-                      <span>Export Deterministic Analytical Products:</span>
+                      <span>Export Analytical Products:</span>
                     </div>
 
                     <div className="flex items-center gap-2.5">
                       <button
                         onClick={handleExportGeoJson}
-                        className="px-3 py-1.5 bg-[#070b14] hover:bg-[#131b2e] border border-[#1e293b] hover:border-cyan-500/50 rounded-xl text-slate-300 hover:text-cyan-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+                        className="px-3 py-1.5 bg-[#070b14] hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 rounded-xl text-slate-300 hover:text-cyan-300 transition-colors flex items-center gap-1.5 cursor-pointer font-medium"
                       >
                         <FileDown className="w-3.5 h-3.5 text-cyan-400" />
                         <span>Export GeoJSON</span>
@@ -404,7 +420,7 @@ export default function App() {
               </div>
 
               {/* Right Column: Signature Plan Tape Log (Cols 9-12 on desktop) */}
-              <div className="lg:col-span-4 bg-[#0c1322] flex flex-col border-l border-[#1e293b] h-full overflow-hidden">
+              <div className="lg:col-span-4 bg-[#0c1322] flex flex-col border-l border-slate-800 h-full overflow-hidden">
                 <PlanTape
                   stepResults={response?.step_results || []}
                   totalDurationMs={response?.total_duration_ms}

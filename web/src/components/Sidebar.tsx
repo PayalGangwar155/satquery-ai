@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Sparkles
 } from 'lucide-react';
+import { SystemHealth } from '../types';
 
 export type ActiveTab = 'analysis' | 'explore' | 'history' | 'saved' | 'datasources' | 'settings';
 
@@ -18,6 +19,8 @@ interface SidebarProps {
   setCollapsed: (collapsed: boolean) => void;
   historyCount: number;
   savedCount: number;
+  health?: SystemHealth | null;
+  onOpenHelp?: () => void;
 }
 
 export default function Sidebar({
@@ -33,54 +36,48 @@ export default function Sidebar({
       id: 'analysis' as ActiveTab,
       label: 'New Analysis',
       icon: Sparkles,
-      badge: null,
-      desc: 'Natural Language Query & Index'
+      desc: 'Query & Index Analysis'
     },
     {
       id: 'explore' as ActiveTab,
       label: 'Explore Map',
       icon: Compass,
-      badge: null,
-      desc: 'Interactive Map & Overlays'
+      desc: 'Interactive Satellite Map'
     },
     {
       id: 'history' as ActiveTab,
-      label: 'Analysis History',
+      label: historyCount > 0 ? `Analysis History (${historyCount})` : 'Analysis History',
       icon: History,
-      badge: historyCount > 0 ? historyCount : null,
       desc: 'Recent Analyzed Queries'
     },
     {
       id: 'saved' as ActiveTab,
-      label: 'Saved Areas',
+      label: savedCount > 0 ? `Saved Areas (${savedCount})` : 'Saved Areas',
       icon: MapPin,
-      badge: savedCount > 0 ? savedCount : null,
       desc: 'Pre-configured Regions'
     },
     {
       id: 'datasources' as ActiveTab,
-      label: 'Data Sources',
+      label: 'Data Sources: S2 / S1',
       icon: Database,
-      badge: 'S2/S1',
       desc: 'Sensors & Missions'
     },
     {
       id: 'settings' as ActiveTab,
       label: 'System Settings',
       icon: Settings,
-      badge: null,
-      desc: 'Pipeline & Engine Diagnostics'
+      desc: 'Engine Diagnostics'
     }
   ];
 
   return (
     <aside
-      className={`border-r border-[#1e293b] bg-[#0c1322] flex flex-col transition-all duration-300 relative z-30 ${
+      className={`border-r border-slate-800/80 bg-[#090d18] flex flex-col transition-all duration-300 relative z-30 shrink-0 ${
         collapsed ? 'w-16' : 'w-64'
       }`}
     >
       {/* Navigation Links */}
-      <div className="flex-1 py-4 px-2.5 space-y-1.5 overflow-y-auto">
+      <div className="flex-1 py-3 px-2.5 space-y-1 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -90,10 +87,10 @@ export default function Sidebar({
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               title={collapsed ? `${item.label} — ${item.desc}` : undefined}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-mono text-xs transition-all text-left group relative cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs transition-all text-left group relative cursor-pointer ${
                 isActive
-                  ? 'bg-[#0e2a38] text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-950/40 font-bold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#131b2e] border border-transparent'
+                  ? 'bg-[#0e2a38] text-cyan-200 border border-cyan-500/40 shadow-lg shadow-cyan-950/30 font-semibold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent font-medium'
               }`}
             >
               <Icon
@@ -103,13 +100,8 @@ export default function Sidebar({
               />
 
               {!collapsed && (
-                <div className="flex-1 min-w-0 flex items-center justify-between">
-                  <span className="truncate">{item.label}</span>
-                  {item.badge && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-[#070b14] border border-[#1e293b] text-cyan-400">
-                      {item.badge}
-                    </span>
-                  )}
+                <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+                  <span className="truncate text-sm">{item.label}</span>
                 </div>
               )}
 
@@ -122,29 +114,11 @@ export default function Sidebar({
         })}
       </div>
 
-      {/* Ground Station Telemetry Footer */}
-      {!collapsed && (
-        <div className="p-3 border-t border-[#1e293b] bg-[#070b14]/60 font-mono text-[10px] text-slate-400 space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-slate-400">COPERNICUS STAC:</span>
-            <span className="text-emerald-400 font-bold">ONLINE</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-slate-400">NUMERIC GUARD:</span>
-            <span className="text-cyan-400 font-bold">STRICT (0%)</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-slate-400">CONFIDENCE:</span>
-            <span className="text-slate-300">DETERMINISTIC</span>
-          </div>
-        </div>
-      )}
-
       {/* Collapse/Expand Toggle Button */}
-      <div className="p-2 border-t border-[#1e293b] flex items-center justify-end bg-[#070b14]">
+      <div className="p-2 border-t border-slate-800/80 flex items-center justify-end bg-[#070b14]">
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full py-1.5 px-2 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-[#131b2e] rounded-lg transition-colors font-mono text-xs cursor-pointer"
+          className="w-full py-1.5 px-2 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-lg transition-colors text-xs cursor-pointer font-sans"
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? (
@@ -152,7 +126,7 @@ export default function Sidebar({
           ) : (
             <>
               <ChevronLeft className="w-4 h-4 text-cyan-400" />
-              <span className="text-[11px]">COLLAPSE</span>
+              <span className="text-xs">Collapse Menu</span>
             </>
           )}
         </button>

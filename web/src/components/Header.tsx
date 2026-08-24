@@ -26,19 +26,21 @@ export default function Header({
 
   return (
     <header className="border-b border-slate-800/80 bg-[#0c1322]/95 backdrop-blur-md px-5 py-3 flex items-center justify-between shadow-xl sticky top-0 z-50">
-      {/* Left: Brand Identity */}
+      {/* Left: Brand Identity with dot separators */}
       <div className="flex items-center gap-3.5">
         <div className="p-2.5 bg-cyan-950/60 text-cyan-400 border border-cyan-500/40 rounded-xl shadow-lg shadow-cyan-950/40 flex items-center justify-center">
           <Satellite className="w-5 h-5 animate-pulse text-cyan-400" />
         </div>
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-1.5">
-              SatQuery <span className="text-cyan-400 font-extrabold">AI</span>
+            <h1 className="text-base font-bold tracking-tight text-white flex items-center gap-1">
+              <span>SatQuery</span> <span className="text-cyan-400 font-extrabold">AI</span>
             </h1>
+            <span className="text-slate-500 font-normal">·</span>
             <span className="text-[11px] text-cyan-300 bg-cyan-950/80 border border-cyan-500/40 px-2 py-0.5 rounded-md font-mono font-semibold">
               SIH26167
             </span>
+            <span className="text-slate-500 font-normal">·</span>
             <span className={`text-[11px] px-2 py-0.5 rounded-md font-mono font-medium border ${
               isReplay
                 ? 'bg-amber-950/50 border-amber-800/80 text-amber-300'

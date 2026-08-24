@@ -27,16 +27,16 @@ interface MapViewProps {
 
 const BASEMAP_STYLES = {
   dark: {
-    name: 'Carto Dark Matter',
+    name: 'Dark Matter',
     url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
   },
-  positron: {
-    name: 'Carto Positron (Light)',
-    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
-  },
   voyager: {
-    name: 'Carto Voyager (Terrain)',
+    name: 'Terrain',
     url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json'
+  },
+  positron: {
+    name: 'Light',
+    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
   }
 };
 
@@ -212,7 +212,7 @@ export default function MapView({
           el.className = 'relative flex items-center justify-center';
           el.innerHTML = `
             <div class="absolute w-8 h-8 rounded-full bg-cyan-400/30 animate-ping"></div>
-            <div class="w-5 h-5 rounded-full bg-cyan-500/80 border-2 border-cyan-300 flex items-center justify-center shadow-lg shadow-cyan-500/50">
+            <div class="w-5 h-5 rounded-full bg-cyan-500/90 border-2 border-cyan-300 flex items-center justify-center shadow-lg shadow-cyan-500/50">
               <div class="w-2 h-2 rounded-full bg-slate-950"></div>
             </div>
           `;
@@ -241,7 +241,7 @@ export default function MapView({
     };
   }, [applyGeoJsonLayers]);
 
-  // Reset view to India default
+  // Reset view to India default or active AOI
   const handleResetView = () => {
     if (!mapRef.current) return;
     if (bbox && bbox.length === 4) {
@@ -258,40 +258,40 @@ export default function MapView({
   };
 
   return (
-    <div className="relative w-full h-[500px] min-h-[420px] bg-[#070b14] border border-[#1e293b] rounded-2xl overflow-hidden shadow-2xl flex flex-col z-10 group">
-      {/* Top Left Satellite Telemetry Badge */}
-      <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none bg-[#0c1322]/95 border border-[#1e293b] backdrop-blur-md px-3.5 py-2.5 rounded-xl text-xs font-mono text-slate-300 shadow-xl flex items-center gap-3">
-        <div className="p-1.5 bg-[#0e2a38] text-cyan-400 border border-cyan-500/40 rounded-lg">
+    <div className="relative w-full h-[480px] sm:h-[540px] bg-[#070b14] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col z-10 group">
+      {/* Top Left Spatial Telemetry Badge with Explicit Gap */}
+      <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none bg-[#0c1322]/95 border border-slate-800 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs text-slate-300 shadow-xl flex items-center gap-3">
+        <div className="p-1.5 bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 rounded-lg shrink-0">
           <Eye className="w-4 h-4 text-cyan-400" />
         </div>
         <div>
-          <div className="font-bold text-slate-100 flex items-center gap-2">
-            <span>SPATIAL OBSERVATION VIEW</span>
-            <span className="text-[10px] text-cyan-300 bg-[#0e2a38] px-1.5 py-0.5 rounded border border-cyan-500/40 font-mono font-semibold">
-              {satelliteMetadata?.collection || 'SENTINEL-2 L2A'}
+          <div className="font-semibold text-white flex items-center gap-2 flex-wrap">
+            <span>Spatial Observation Map</span>
+            <span className="text-[10px] text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded-md border border-cyan-500/40 font-mono font-semibold">
+              {satelliteMetadata?.collection || 'Sentinel-2 L2A'}
             </span>
           </div>
-          <div className="text-[10px] text-slate-400 pt-0.5">
-            RES: {satelliteMetadata?.resolution || '10m'} | SPECTRUM: MULTISPECTRAL | ZOOM: {currentZoom}x
+          <div className="text-[11px] text-slate-400 font-mono pt-0.5">
+            Resolution: {satelliteMetadata?.resolution || '10m'} &bull; Zoom: {currentZoom}x
           </div>
         </div>
       </div>
 
       {/* Top Right Floating Controls Bar */}
       <div className="absolute top-3.5 right-14 z-20 flex items-center gap-2">
-        {/* Style Selector */}
-        <div className="bg-[#0c1322]/95 border border-[#1e293b] backdrop-blur-md p-1 rounded-xl shadow-xl flex items-center gap-1 font-mono text-[11px]">
+        {/* Basemap Style Selector */}
+        <div className="bg-[#0c1322]/95 border border-slate-800 backdrop-blur-md p-1 rounded-xl shadow-xl flex items-center gap-1 text-xs">
           {(['dark', 'voyager', 'positron'] as Array<keyof typeof BASEMAP_STYLES>).map((key) => (
             <button
               key={key}
               onClick={() => handleStyleChange(key)}
-              className={`px-2.5 py-1 rounded-lg transition-colors capitalize cursor-pointer ${
+              className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer text-xs font-medium ${
                 activeStyleKey === key
-                  ? 'bg-cyan-900/60 text-cyan-300 font-bold border border-cyan-500/50'
+                  ? 'bg-cyan-900/70 text-cyan-300 font-bold border border-cyan-500/50 shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              {key}
+              {BASEMAP_STYLES[key].name}
             </button>
           ))}
         </div>
@@ -299,8 +299,8 @@ export default function MapView({
         {/* Reset Camera Button */}
         <button
           onClick={handleResetView}
-          title="Reset Camera View"
-          className="p-2 bg-[#0c1322]/95 hover:bg-[#131b2e] border border-[#1e293b] hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 rounded-xl shadow-xl transition-colors font-mono text-xs flex items-center gap-1 cursor-pointer"
+          title="Reset Camera View to AOI"
+          className="p-2 bg-[#0c1322]/95 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 rounded-xl shadow-xl transition-colors text-xs flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
@@ -308,11 +308,11 @@ export default function MapView({
         {/* Toggle Legend Button */}
         <button
           onClick={() => setShowLegend(!showLegend)}
-          title="Toggle Spectral Legend"
-          className={`p-2 border rounded-xl shadow-xl transition-colors font-mono text-xs flex items-center gap-1 cursor-pointer ${
+          title="Toggle Spectral Scale Legend"
+          className={`p-2 border rounded-xl shadow-xl transition-colors text-xs flex items-center gap-1 cursor-pointer ${
             showLegend
-              ? 'bg-[#0e2a38] text-cyan-300 border-cyan-500/50'
-              : 'bg-[#0c1322]/95 hover:bg-[#131b2e] border-[#1e293b] text-slate-300'
+              ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/50'
+              : 'bg-[#0c1322]/95 hover:bg-slate-800 border-slate-800 text-slate-300'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -331,26 +331,26 @@ export default function MapView({
 
       {/* Error state alert if WebGL fails */}
       {mapError && (
-        <div className="absolute inset-0 bg-[#070b14]/95 flex flex-col items-center justify-center p-6 text-center z-30 font-mono">
+        <div className="absolute inset-0 bg-[#070b14]/95 flex flex-col items-center justify-center p-6 text-center z-30 font-sans">
           <AlertCircle className="w-10 h-10 text-amber-400 mb-3" />
           <h3 className="text-sm font-bold text-slate-100">Map Rendering Issue</h3>
           <p className="text-xs text-slate-400 mt-1 max-w-md">{mapError}</p>
         </div>
       )}
 
-      {/* Bottom Floating Status Bar */}
-      <div className="absolute bottom-3.5 left-3.5 z-20 pointer-events-none flex items-center gap-2">
+      {/* Bottom Floating Status Bar with explicit padding & gaps */}
+      <div className="absolute bottom-3.5 left-3.5 z-20 pointer-events-none flex items-center gap-2 flex-wrap">
         {aoiName && (
-          <div className="bg-[#0e2a38]/95 border border-cyan-500/50 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs font-mono text-cyan-200 flex items-center gap-2 shadow-xl font-bold">
-            <MapPin className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-            <span>AOI: {aoiName}</span>
+          <div className="bg-cyan-950/90 border border-cyan-500/50 backdrop-blur-md px-3 py-1.5 rounded-xl text-xs text-cyan-200 flex items-center gap-2 shadow-xl font-semibold">
+            <MapPin className="w-3.5 h-3.5 text-cyan-400 animate-pulse shrink-0" />
+            <span className="truncate max-w-xs">AOI: {aoiName}</span>
           </div>
         )}
 
         {cursorCoords && (
-          <div className="hidden sm:flex bg-[#0c1322]/90 border border-[#1e293b] backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 items-center gap-2 shadow-xl">
+          <div className="hidden sm:flex bg-[#0c1322]/90 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 items-center gap-2 shadow-xl">
             <Crosshair className="w-3 h-3 text-cyan-400" />
-            <span>LAT: {cursorCoords.lat}° | LON: {cursorCoords.lon}°</span>
+            <span>Lat: {cursorCoords.lat}&deg; &bull; Lon: {cursorCoords.lon}&deg;</span>
           </div>
         )}
       </div>

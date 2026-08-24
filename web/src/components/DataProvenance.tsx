@@ -1,7 +1,8 @@
 import {
   Database,
   ExternalLink,
-  CheckCircle2
+  CheckCircle2,
+  Layers
 } from 'lucide-react';
 
 interface DataProvenanceProps {
@@ -55,7 +56,7 @@ export default function DataProvenance({ evidence }: DataProvenanceProps) {
     {
       title: 'Processing Engine',
       value: 'SatQuery Core (numpy, rasterio, shapely, PostGIS)',
-      detail: 'Deterministic raster math executed on local CPU without model hallucinations'
+      detail: 'Deterministic raster math executed locally with zero LLM calculations'
     },
     {
       title: 'Audit & Provenance Timestamp',
@@ -65,50 +66,51 @@ export default function DataProvenance({ evidence }: DataProvenanceProps) {
   ];
 
   return (
-    <div className="p-6 bg-[#0f172a] border border-[#1e293b] rounded-2xl shadow-2xl space-y-4 font-mono">
+    <div className="p-4 sm:p-5 bg-[#0f172a] border border-slate-800 rounded-2xl shadow-xl space-y-3.5 font-sans">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-[#1e293b] pb-3">
-        <div className="flex items-center gap-2 text-cyan-400 font-bold text-xs uppercase tracking-wider">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <div className="flex items-center gap-2 text-cyan-400 font-semibold text-xs uppercase tracking-wider">
           <Database className="w-4 h-4" />
-          <span>DATA PROVENANCE & UPSTREAM AUDIT TRAIL</span>
+          <span>Data Provenance & Upstream Audit Trail</span>
         </div>
-        <div className="flex items-center gap-1 text-[11px] text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded border border-emerald-800/80">
+        <div className="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-800/60 font-medium">
           <CheckCircle2 className="w-3.5 h-3.5" />
-          <span>100% REPRODUCIBLE</span>
+          <span>100% Reproducible</span>
         </div>
       </div>
 
       {/* Primary Upstream Scene Info Box */}
-      <div className="p-4 bg-[#070b14] border border-[#1e293b] rounded-xl space-y-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">PRIMARY SCENE:</span>
+      <div className="p-3.5 bg-[#070b14] border border-slate-800 rounded-xl space-y-1.5 font-mono text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-slate-400 font-sans">Primary Scene:</span>
             <span className="text-amber-300 font-bold break-all">{sceneId}</span>
           </div>
-          <div className="text-slate-400 text-[11px] shrink-0">
-            ACQUIRED: <span className="text-slate-200">{acqDate}</span>
+          <div className="text-slate-400 text-xs shrink-0">
+            Acquired: <span className="text-slate-200">{acqDate.substring(0, 19).replace('T', ' ')} UTC</span>
           </div>
         </div>
-        <div className="text-[11px] text-slate-400 truncate flex items-center gap-1.5 pt-1 border-t border-[#1e293b]">
+        <div className="text-[11px] text-slate-400 truncate flex items-center gap-1.5 pt-1 border-t border-slate-800/80">
           <ExternalLink className="w-3 h-3 text-cyan-400 shrink-0" />
           <span className="truncate">{stacUrl}</span>
         </div>
       </div>
 
       {/* Grid of Provenance Metadata */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-0.5">
         {provenanceItems.map((item) => (
           <div
             key={item.title}
-            className="p-3.5 bg-[#070b14] border border-[#1e293b] hover:border-cyan-500/40 rounded-xl space-y-1 transition-colors"
+            className="p-3 bg-[#070b14] border border-slate-800/80 hover:border-cyan-500/40 rounded-xl space-y-1 transition-colors"
           >
-            <div className="text-[11px] font-bold text-slate-300 flex items-center justify-between">
+            <div className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
               <span>{item.title}</span>
             </div>
-            <div className="text-xs text-cyan-300 font-bold truncate">
+            <div className="text-xs font-bold font-mono text-cyan-300 truncate">
               {item.value}
             </div>
-            <div className="text-[10px] text-slate-400 line-clamp-2 leading-relaxed">
+            <div className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
               {item.detail}
             </div>
           </div>
