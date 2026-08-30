@@ -7,7 +7,8 @@ import {
   AlertCircle,
   Eye,
   RotateCcw,
-  Crosshair
+  Crosshair,
+  Sliders
 } from 'lucide-react';
 import MapLegend from './MapLegend';
 
@@ -57,6 +58,8 @@ export default function MapView({
   const [currentZoom, setCurrentZoom] = useState<number>(4.5);
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof BASEMAP_STYLES>('dark');
   const [showLegend, setShowLegend] = useState(true);
+  const [layerOpacity, setLayerOpacity] = useState<number>(0.4);
+  const [activeLayerFilter, setActiveLayerFilter] = useState<'ALL' | 'OPTICAL' | 'AOI' | 'CHANGE'>('ALL');
 
   // Initialize MapLibre GL map
   useEffect(() => {
@@ -166,7 +169,7 @@ export default function MapView({
           source: 'aoi-source',
           paint: {
             'fill-color': fillColor,
-            'fill-opacity': 0.25
+            'fill-opacity': layerOpacity
           }
         });
 
@@ -185,7 +188,20 @@ export default function MapView({
     } catch (err) {
       console.error('Error applying GeoJSON vector layer:', err);
     }
-  }, [geojson, indexName]);
+  }, [geojson, indexName, layerOpacity]);
+
+  // Update fill opacity dynamically when slider moves
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapLoaded) return;
+    try {
+      if (map.getLayer('aoi-fill')) {
+        map.setPaintProperty('aoi-fill', 'fill-opacity', layerOpacity);
+      }
+    } catch (e) {
+      console.warn('Could not update layer opacity', e);
+    }
+  }, [layerOpacity, mapLoaded]);
 
   // Update bounds, centroid marker, and vector layers when AOI changes
   useEffect(() => {
@@ -258,9 +274,9 @@ export default function MapView({
   };
 
   return (
-    <div className="relative w-full h-[480px] sm:h-[540px] bg-[#070b14] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col z-10 group">
+    <div className="relative w-full h-[520px] sm:h-[580px] bg-[#070b14] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col z-10 group">
       {/* Top Left Spatial Telemetry Badge with Explicit Gap */}
-      <div className="absolute top-3.5 left-3.5 z-20 pointer-events-none bg-[#0c1322]/95 border border-slate-800 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs text-slate-300 shadow-xl flex items-center gap-3">
+      <div className="absolute top-3 left-3 z-20 pointer-events-none bg-[#0a0f1d]/95 border border-slate-800 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs text-slate-300 shadow-2xl flex items-center gap-3">
         <div className="p-1.5 bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 rounded-lg shrink-0">
           <Eye className="w-4 h-4 text-cyan-400" />
         </div>
@@ -278,9 +294,26 @@ export default function MapView({
       </div>
 
       {/* Top Right Floating Controls Bar */}
-      <div className="absolute top-3.5 right-14 z-20 flex items-center gap-2">
+      <div className="absolute top-3 right-14 z-20 flex items-center gap-2">
+        {/* Layer Filter Chips */}
+        <div className="hidden md:flex bg-[#0a0f1d]/95 border border-slate-800 backdrop-blur-md p-1 rounded-xl shadow-xl items-center gap-1 text-[11px] font-mono">
+          {(['ALL', 'OPTICAL', 'AOI', 'CHANGE'] as const).map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setActiveLayerFilter(filter)}
+              className={`px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                activeLayerFilter === filter
+                  ? 'bg-cyan-900/60 text-cyan-300 font-bold border border-cyan-500/40'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+
         {/* Basemap Style Selector */}
-        <div className="bg-[#0c1322]/95 border border-slate-800 backdrop-blur-md p-1 rounded-xl shadow-xl flex items-center gap-1 text-xs">
+        <div className="bg-[#0a0f1d]/95 border border-slate-800 backdrop-blur-md p-1 rounded-xl shadow-xl flex items-center gap-1 text-xs">
           {(['dark', 'voyager', 'positron'] as Array<keyof typeof BASEMAP_STYLES>).map((key) => (
             <button
               key={key}
@@ -300,7 +333,7 @@ export default function MapView({
         <button
           onClick={handleResetView}
           title="Reset Camera View to AOI"
-          className="p-2 bg-[#0c1322]/95 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 rounded-xl shadow-xl transition-colors text-xs flex items-center gap-1 cursor-pointer"
+          className="p-2 bg-[#0a0f1d]/95 hover:bg-slate-800 border border-slate-800 hover:border-cyan-500/50 text-slate-300 hover:text-cyan-300 rounded-xl shadow-xl transition-colors text-xs flex items-center gap-1 cursor-pointer"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
@@ -312,7 +345,7 @@ export default function MapView({
           className={`p-2 border rounded-xl shadow-xl transition-colors text-xs flex items-center gap-1 cursor-pointer ${
             showLegend
               ? 'bg-cyan-950/80 text-cyan-300 border-cyan-500/50'
-              : 'bg-[#0c1322]/95 hover:bg-slate-800 border-slate-800 text-slate-300'
+              : 'bg-[#0a0f1d]/95 hover:bg-slate-800 border-slate-800 text-slate-300'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -324,7 +357,26 @@ export default function MapView({
 
       {/* Bottom Right Floating Legend Overlay */}
       {showLegend && (
-        <div className="absolute bottom-4 right-4 z-20 w-64 max-w-[calc(100%-2rem)]">
+        <div className="absolute bottom-4 right-4 z-20 w-64 max-w-[calc(100%-2rem)] space-y-2">
+          {/* Opacity Control Slider */}
+          <div className="p-2.5 bg-[#0a0f1d]/95 border border-slate-800 rounded-xl shadow-xl backdrop-blur-md text-xs font-mono space-y-1.5">
+            <div className="flex items-center justify-between text-slate-400 text-[10px]">
+              <span className="flex items-center gap-1 text-slate-300">
+                <Sliders className="w-3 h-3 text-cyan-400" /> Layer Opacity
+              </span>
+              <span className="text-cyan-300 font-bold">{Math.round(layerOpacity * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min="0.05"
+              max="0.9"
+              step="0.05"
+              value={layerOpacity}
+              onChange={(e) => setLayerOpacity(parseFloat(e.target.value))}
+              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+            />
+          </div>
+
           <MapLegend indexName={indexName} meanValue={meanValue} />
         </div>
       )}
@@ -348,7 +400,7 @@ export default function MapView({
         )}
 
         {cursorCoords && (
-          <div className="hidden sm:flex bg-[#0c1322]/90 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 items-center gap-2 shadow-xl">
+          <div className="hidden sm:flex bg-[#0a0f1d]/90 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-xl text-[11px] font-mono text-slate-400 items-center gap-2 shadow-xl">
             <Crosshair className="w-3 h-3 text-cyan-400" />
             <span>Lat: {cursorCoords.lat}&deg; &bull; Lon: {cursorCoords.lon}&deg;</span>
           </div>

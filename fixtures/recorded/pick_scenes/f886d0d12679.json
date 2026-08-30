@@ -1,0 +1,42 @@
+{
+  "selected_scene": {
+    "scene_id": "S2B_MSIL2A_20250515T053639_N0511_R005_T43REQ_20250515T081522",
+    "acquisition_date": "2025-05-15T05:36:39Z",
+    "cloud_cover": 8.0,
+    "bbox": [
+      77.45,
+      12.85,
+      77.75,
+      13.15
+    ],
+    "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/collections/SENTINEL-2/items/S2B_MSIL2A_20250515",
+    "collection": "SENTINEL-2"
+  },
+  "cloud_fraction": 0.08,
+  "strategy_used": "lowest_cloud",
+  "provenance": {
+    "source_name": "SatQuery Deterministic Scene Selection Engine",
+    "source_url": "internal://pick_scenes",
+    "retrieved_at": "2026-08-30T06:00:21Z",
+    "request_params": {
+      "strategy": "lowest_cloud",
+      "scenes": [
+        {
+          "scene_id": "S2B_MSIL2A_20250515T053639_N0511_R005_T43REQ_20250515T081522",
+          "acquisition_date": "2025-05-15T05:36:39Z",
+          "cloud_cover": 8.0,
+          "bbox": [
+            77.45,
+            12.85,
+            77.75,
+            13.15
+          ],
+          "stac_url": "https://catalogue.dataspace.copernicus.eu/stac/collections/SENTINEL-2/items/S2B_MSIL2A_20250515",
+          "collection": "SENTINEL-2"
+        }
+      ]
+    },
+    "scene_id": "S2B_MSIL2A_20250515T053639_N0511_R005_T43REQ_20250515T081522",
+    "acquisition_date": "2025-05-15T05:36:39Z"
+  }
+}

@@ -9,9 +9,10 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import Header from './components/Header';
-import Sidebar, { ActiveTab } from './components/Sidebar';
+import Sidebar from './components/Sidebar';
 import QueryBar from './components/QueryBar';
 import PipelineTracker from './components/PipelineTracker';
+import ExecutionStatusPanel from './components/ExecutionStatusPanel';
 import MapView from './components/MapView';
 import MetricCards from './components/MetricCards';
 import AnswerCard from './components/AnswerCard';
@@ -19,6 +20,11 @@ import DataProvenance from './components/DataProvenance';
 import PlanTape from './components/PlanTape';
 import AnalysisHistory from './components/AnalysisHistory';
 import SavedAreas, { DEFAULT_SAVED_AREAS } from './components/SavedAreas';
+import LiveSatelliteData from './components/LiveSatelliteData';
+import ChangeDetectionView from './components/ChangeDetectionView';
+import OpticalSarView from './components/OpticalSarView';
+import ModelRegistryView from './components/ModelRegistryView';
+import ReportsView from './components/ReportsView';
 import DataSourcesModal from './components/DataSourcesModal';
 import HelpModal from './components/HelpModal';
 import SettingsModal from './components/SettingsModal';
@@ -26,7 +32,8 @@ import {
   SystemHealth,
   QueryResponse,
   HistoryItem,
-  SavedArea
+  SavedArea,
+  ActiveTab
 } from './types';
 
 export default function App() {
@@ -159,6 +166,13 @@ export default function App() {
     handleExecute(area.defaultQuery);
   };
 
+  // Trigger specialized query from views
+  const handleRunSpecializedQuery = (q: string) => {
+    setQuery(q);
+    setActiveTab('analysis');
+    handleExecute(q);
+  };
+
   // Save current active AOI
   const handleSaveCurrentAoi = () => {
     if (!response?.evidence?.step_1) return;
@@ -226,7 +240,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-cyan-900 selection:text-cyan-100 overflow-hidden">
-      {/* Top Header */}
+      {/* Top Mission Control Header */}
       <Header
         health={health}
         onOpenHelp={() => setIsHelpOpen(true)}
@@ -236,7 +250,7 @@ export default function App() {
 
       {/* Main Workspace Body */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar */}
+        {/* Left Persistent Navigation Sidebar */}
         <Sidebar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -248,10 +262,24 @@ export default function App() {
           onOpenHelp={() => setIsHelpOpen(true)}
         />
 
-        {/* Content Area */}
+        {/* Dynamic Workspace Router */}
         <main className="flex-1 overflow-y-auto bg-[#070b14] flex flex-col">
-          {/* VIEW ROUTER */}
-          {activeTab === 'history' ? (
+          {activeTab === 'live-satellite' ? (
+            <LiveSatelliteData onAnalyzeScene={handleRunSpecializedQuery} />
+          ) : activeTab === 'change-detection' ? (
+            <ChangeDetectionView onRunChangeAnalysis={handleRunSpecializedQuery} />
+          ) : activeTab === 'optical-sar' ? (
+            <OpticalSarView onRunOpticalSarQuery={handleRunSpecializedQuery} />
+          ) : activeTab === 'model-registry' ? (
+            <ModelRegistryView />
+          ) : activeTab === 'reports' ? (
+            <ReportsView
+              currentResponse={response}
+              history={history}
+              onExportGeoJson={handleExportGeoJson}
+              onExportReport={handleExportReport}
+            />
+          ) : activeTab === 'history' ? (
             <div className="p-6 max-w-5xl mx-auto w-full">
               <AnalysisHistory
                 history={history}
@@ -277,10 +305,10 @@ export default function App() {
               <SettingsModal isOpen={true} onClose={() => setActiveTab('analysis')} health={health} />
             </div>
           ) : (
-            /* MAIN ANALYSIS / EXPLORE WORKSPACE */
+            /* MAIN MISSION CONTROL WORKSPACE (Default) */
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 flex-1 min-h-0">
-              {/* Center/Left Main Panel (Cols 1-8 on desktop) */}
-              <div className="lg:col-span-8 border-r border-slate-800 flex flex-col p-4 sm:p-5 gap-4 sm:gap-5 overflow-y-auto bg-[#070b14]">
+              {/* Center / Dominant Map & Query Workspace (Cols 1-8) */}
+              <div className="lg:col-span-8 border-r border-slate-800 flex flex-col p-4 sm:p-5 gap-4 overflow-y-auto bg-[#070b14]">
                 {/* Hero Command Query Bar */}
                 <QueryBar
                   query={query}
@@ -289,13 +317,20 @@ export default function App() {
                   loading={loading}
                 />
 
-                {/* Visual Pipeline Tracker */}
+                {/* Compact Mission Control Execution Status Badge */}
+                <ExecutionStatusPanel
+                  response={response}
+                  loading={loading}
+                  status={pipelineStatus}
+                />
+
+                {/* Stepper Pipeline Tracker */}
                 <PipelineTracker
                   status={pipelineStatus}
                   totalDurationMs={response?.total_duration_ms}
                 />
 
-                {/* MapLibre GL Cartographic Map View */}
+                {/* Dominant MapLibre GL Cartographic Map View */}
                 <MapView
                   bbox={activeBbox}
                   geojson={activeGeojson}
@@ -340,15 +375,15 @@ export default function App() {
                   </div>
                 )}
 
-                {/* Empty State Banner before first analysis */}
+                {/* Empty State Guidance Banner */}
                 {!response && !loading && !error && (
-                  <div className="p-8 border border-slate-800 rounded-2xl bg-[#0f172a] text-center space-y-3 shadow-xl">
+                  <div className="p-7 border border-slate-800 rounded-2xl bg-[#0a0f1d] text-center space-y-3 shadow-xl">
                     <div className="p-3 bg-cyan-950/80 text-cyan-400 border border-cyan-500/40 rounded-2xl w-fit mx-auto shadow-md">
-                      <Compass className="w-8 h-8 animate-pulse text-cyan-400" />
+                      <Compass className="w-7 h-7 animate-pulse text-cyan-400" />
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-base font-bold text-white font-sans">
-                        Ready to Explore Earth Observations
+                        Earth Observation Intelligence Ready
                       </h3>
                       <p className="text-xs text-slate-400 max-w-md mx-auto">
                         Ask about vegetation health, flood extent, urban development, or crop vigor across Indian and global geographic regions using the query bar above.
@@ -376,7 +411,7 @@ export default function App() {
                   />
                 )}
 
-                {/* Grounded Natural Language Narrative & Confidence Gauge */}
+                {/* Grounded Natural Language Narrative & Confidence Breakdown */}
                 {response && (
                   <AnswerCard
                     answer={response.grounded_answer}
@@ -390,9 +425,9 @@ export default function App() {
                   <DataProvenance evidence={response.evidence} />
                 )}
 
-                {/* Export Actions Bar */}
+                {/* Export Analytical Products Bar */}
                 {response && (
-                  <div className="p-4 bg-[#0f172a] border border-slate-800 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs shadow-xl">
+                  <div className="p-4 bg-[#0a0f1d] border border-slate-800 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs shadow-xl">
                     <div className="flex items-center gap-2 text-slate-300 font-medium">
                       <Layers className="w-4 h-4 text-cyan-400" />
                       <span>Export Analytical Products:</span>
@@ -419,8 +454,8 @@ export default function App() {
                 )}
               </div>
 
-              {/* Right Column: Signature Plan Tape Log (Cols 9-12 on desktop) */}
-              <div className="lg:col-span-4 bg-[#0c1322] flex flex-col border-l border-slate-800 h-full overflow-hidden">
+              {/* Right Column: Signature GeoPlan Execution Trace (Cols 9-12) */}
+              <div className="lg:col-span-4 bg-[#080d1a] flex flex-col border-l border-slate-800 h-full overflow-hidden p-4">
                 <PlanTape
                   stepResults={response?.step_results || []}
                   totalDurationMs={response?.total_duration_ms}

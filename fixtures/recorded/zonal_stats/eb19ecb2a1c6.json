@@ -1,0 +1,27 @@
+{
+  "metrics": {
+    "mean": 0.452,
+    "std": 0.185,
+    "min": -0.12,
+    "max": 0.84
+  },
+  "valid_pixel_count": 1250000,
+  "pixel_area_m2": 100.0,
+  "total_area_sq_km": 125.0,
+  "provenance": {
+    "source_name": "SatQuery Deterministic Zonal Statistics Engine",
+    "source_url": "internal://zonal_stats",
+    "retrieved_at": "2026-08-30T06:01:53Z",
+    "request_params": {
+      "metrics": [
+        "mean",
+        "std",
+        "min",
+        "max"
+      ],
+      "raster_path": "C:\\Users\\Payal Gangwar\\sih\\sih\\artifacts\\index_NDVI_744edf049488.tif"
+    },
+    "scene_id": null,
+    "acquisition_date": null
+  }
+}

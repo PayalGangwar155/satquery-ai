@@ -41,24 +41,25 @@ def heuristic_plan_builder(question: str) -> GeoPlan:
     ]
 
     location = "New Delhi"
-    # Check known cities first (case-insensitive)
     found_known = False
     for loc in KNOWN_LOCATIONS:
         pattern = r'\b' + re.escape(loc.lower()) + r'\b'
         if re.search(pattern, q_lower):
             location = loc
+            if loc.lower() in ["delhi", "delhi ncr"]:
+                location = "New Delhi"
             found_known = True
             break
 
     if not found_known:
-        # Extract location name after prepositions (e.g. "over New Delhi", "in Mumbai", "around Bengaluru")
         loc_match = re.search(r'\b(?:in|over|for|at|around|across|between|of)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)', question, re.IGNORECASE)
         if loc_match:
             candidate = loc_match.group(1).strip()
-            # Clean up stop words/time descriptors
             candidate = re.split(r'\b(?:between|for|during|from|in|with|using|and|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|\d{4})\b', candidate, flags=re.IGNORECASE)[0].strip()
             if candidate and len(candidate) > 2:
                 location = candidate.title()
+                if location.lower() in ["delhi", "delhi ncr"]:
+                    location = "New Delhi"
 
     # Extract dates if specified, else default to 2025 observation window
     date_start = "2025-01-01"
@@ -131,9 +132,7 @@ def generate_geoplan(question: str) -> GeoPlan:
     if settings.OFFLINE_REPLAY or not settings.GEMINI_API_KEY:
         return heuristic_plan_builder(question)
 
-    # In live mode with API key, call Gemini provider
     try:
-        # LLM call will be wired in live mode
         return heuristic_plan_builder(question)
     except Exception:
         return heuristic_plan_builder(question)

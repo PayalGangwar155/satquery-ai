@@ -76,8 +76,35 @@ export interface SavedArea {
 export interface PresetQuery {
   id: string;
   label: string;
-  index: 'NDVI' | 'NDWI' | 'NDBI' | 'CHANGE';
+  index: 'NDVI' | 'NDWI' | 'NDBI' | 'CHANGE' | 'SAR';
   query: string;
   badge: string;
   description: string;
 }
+
+export interface SatelliteScene {
+  scene_id: string;
+  satellite: string;
+  sensor: string;
+  acquisition_date: string;
+  cloud_cover: number;
+  resolution: string;
+  product_id: string;
+  bbox: number[];
+  stac_url: string;
+  collection: string;
+  location_name: string;
+  thumbnail_url?: string;
+}
+
+export type ActiveTab =
+  | 'analysis'
+  | 'live-satellite'
+  | 'change-detection'
+  | 'optical-sar'
+  | 'history'
+  | 'saved'
+  | 'reports'
+  | 'model-registry'
+  | 'datasources'
+  | 'settings';
